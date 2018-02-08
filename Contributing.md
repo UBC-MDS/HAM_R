@@ -5,7 +5,7 @@ We love pull requests from everyone. By participating in this project, you agree
 Fork, then clone the repo:
 
 ```
-git clone git@github.com:your-username/HAM_Python.git
+git clone git@github.com:your-username/HAM_R.git
 ```
 
 Set up your machine:
