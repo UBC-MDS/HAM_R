@@ -14,7 +14,7 @@ Handle All Missing (Values)
 
 Our package intends to explore the pattern of missing values in users' dataset and also imputes the missing values using several methods. 
 
-We decided to make this project because we have not found any package that handle both tasks in either R or Python. In R, we found *Amelia* and *vis_dat* package that only visualize the missing data and in Python we found *fancyimpute* that deals with missing value but does not have any visualization. We thought this would be better package for users who do not have much experience in data wrangling.
+We decided to make this project because we have not found any package that handle both tasks in either R or Python. In R, we found [Amelia](https://cran.r-project.org/web/packages/Amelia/Amelia.pdf) and [visdat](https://cran.r-project.org/web/packages/visdat/visdat.pdf) package that only visualize the missing data and in Python we found [fancyimpute](https://pypi.python.org/pypi/fancyimpute) that deals with missing value but does not have any visualization. We thought this would be better package for users who do not have much experience in data wrangling.
 
 ## Functions
 
