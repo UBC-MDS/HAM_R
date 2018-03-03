@@ -1,60 +1,27 @@
-context("Testing impute_missing")
+context("Testing compare_model")
+library(tidyverse)
+df <- read.csv("../dummy_dataset.csv")
 
-test_that("impute_missing(df, method) returns a data frame without missing values
-          with different methods", {
+meds <- c("CC","IMP")
+result <- compare_model('col1', methods = meds)
 
-  # expected output
-  expect_equal(
-    impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, NA)),
-                   "CC"),
-    data.frame(x = c(1, 2), y = c(0, 10)))
+test <- broom::tidy(df) %>% 
+  select(column,mean,sd,min,median,max) %>% 
+  filter(column == "col1")
 
-  expect_true(
-    impute_missing(matrix(c(1,2,3, 0,10,NA), nrow = 3, ncol = 2, byrow = FALSE),
-                   "CC")
-    ==
-      matrix(c(1,2, 0,10), nrow = 2, ncol = 2, byrow = FALSE))
+for(method in meds){
+  df_after <- impute_missing('col1',method)
+  name <- paste('col1_after_', method, sep="")
+  b <- broom::tidy(df_after) %>% 
+    select(column,mean,sd,min,median,max) %>%
+    filter(column == "col1")
+  b['col1'] <- name
+  test <- rbind(test,b)
+}
 
-  expect_true(
-    impute_missing(c(1, NA, 2, 3), "CC") == c(1, 2, 3))
-
-  expect_equal(
-    impute_missing(data.frame(x = c(1, 2, 3, 4), y = c(0, 6, 10, NA)),
-                   "mean_im"),
-    data.frame(x = c(1, 2, 3, 4), y = c(0, 6, 10, 4)))
-
-  expect_true(
-    impute_missing(matrix(c(1,2,3,4, 0,6,10,NA), nrow = 4, ncol = 2, byrow = FALSE),
-                   "mean_im")
-    ==
-      matrix(c(1,2,3,4, 0,6,10,4), nrow = 4, ncol = 2, byrow = FALSE))
-
-  expect_true(
-    impute_missing(c(1, NA, 2, 5), "mean_im") == c(1, 2, 2, 5))
-
-  expect_equal(
-    impute_missing(data.frame(x = c(1, 2, 3, 4), y = c(0, 10, 10, NA)),
-                   "most_freq"),
-    data.frame(x = c(1, 2, 3, 4), y = c(0, 10, 10, 10)))
-
-  expect_true(
-    impute_missing(matrix(c(1,2,3,4, 0,10,10,NA), nrow = 4, ncol = 2, byrow = FALSE),
-                   "most_freq")
-    ==
-      matrix(c(1,2,3,4, 0,10,10,10), nrow = 4, ncol = 2, byrow = FALSE))
-
-  expect_true(
-    impute_missing(c(1, 2, NA, 2, 5), "most_freq") == c(1, 2, 2, 2, 5))
-
-  # expected errors
-  expect_true(
-    impute_missing(list(1, 2, 2, NA), "most_freq") == list(1, 2, 2, 2))
-
-  expect_equal(
-    impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, NA)),
-                   "CC"),
-    data.frame(x = c(1, 2, 3)))
-
-  expect_true(
-    impute_missing(c(1, 2, 3, NA), "CC") == impute_missing(c(1, 2, 3, ""), "CC"))
+test_that("compare_model(feature, method),
+          Test this function for a normal case", {
+    expect_match(typeof(result),"list")
+    expect_match(class(result),"data.frame")
+    expect_equal(test,result)
 })
