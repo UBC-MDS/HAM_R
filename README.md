@@ -30,11 +30,12 @@ Currently, our package only handles continuous features.
       - dataset
       - feature (if not specified, plot all missing value feature)
       - color
-- `function3()`: Impute the missing value (para: method (CC, Imputation, KNN imputation, ...))
+- `impute_missing()`: Impute the missing value (para: method (CC, Mean imputation, Most frequent element, ...))
     - Input:
       - dataset with missing values (if user don't want to impute the whole dataset, they will have to subset upfront)
       - a method name
-    - Output: dataset with no missing values
+      - missing value characters (NA, NaN, "", "?")
+    - Output: data frame/matrix with no missing values
 - `function4()`: Compare summary statistics between various imputation methods
     - Input: 
       - original dataset containing missing values 
