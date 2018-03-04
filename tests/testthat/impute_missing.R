@@ -51,6 +51,6 @@ test_that("impute_missing(df, method, missing_val_char) returns a data frame or 
   expect_error(impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, NA)), "multiple_im", NA),
                "Method name is unavailable.")
 
-  expect_error(impute_missing(c(1, 2, 3, 0), "CC", 0),
+  expect_error(impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, 0)), "CC", 0),
                "Missing value type is not supported.")
 })
