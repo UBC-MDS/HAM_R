@@ -1,7 +1,7 @@
 # Pre-process function
-todf <- function(dfm, colnames=FALSE) {
+todf <- function(dfm) {
   if (!is.data.frame(dfm) & !is.matrix(dfm)) {
-    stop("Error: expected a data frame or a matrix")
+    stop("Error: data format is not supported, expected a data frame or a matrix")
   }
   
   if (!is.data.frame(dfm)) {
@@ -13,8 +13,14 @@ todf <- function(dfm, colnames=FALSE) {
 }
 
 impute_missing <- function(dfm, col, method, missing_val_char) {
+  
+  dfm = todf(dfm)
 
   '%ni%' <- Negate('%in%')
+  
+  if (col %ni% colnames(dfm)) {
+    stop("Error: the specified column name is not in the data frame")
+  }
 
   if (method %ni% c("CC", "MIP", "DIP")) {
     stop("Error: method is not applicable")
@@ -25,63 +31,53 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
   }
 
   tryCatch({
-    dfm = todf(dfm)
-    
-    # Nested conditions
+
     if (method == "CC") {
       if (is.na(missing_val_char)) {
         dfm = na.omit(dfm)
       }
-      else if (is.nan(missing_val_char)) {
-        dfm[is.nan(dfm)] <- NA
-        dfm = na.omit(dfm)
-      }
-      else if (missing_val_char %in% c("", "?")) {
-        dfm[dfm == ""]  <- NA
-        dfm[dfm == "?"]  <- NA
+      
+      else if (is.nan(missing_val_char) | missing_val_char %in% c("", "?")) {
+        vec <- dfm[,col]
+        vec[is.nan(vec)] <- NA
+        vec[vec == ""]  <- NA
+        vec[vec == "?"]  <- NA
+        dfm[[col]] <- vec
         dfm = na.omit(dfm)
       }
     }
     
     else if (method == "MIP") {
       if (is.na(missing_val_char)) {
-        for (i in 1:ncol(dfm)) {
-          dfm[is.na(dfm[,i]), i] <- mean(dfm[,i], na.rm = TRUE)
-        }
+        vec <- dfm[,col]
+        vec[is.na(vec)] <- mean(vec, na.rm = TRUE)
+        dfm[[col]] <- vec
       }
-      else if (is.nan(missing_val_char)) {
-        dfm[is.nan(dfm)] <- NA
-        for (i in 1:ncol(dfm)) {
-          dfm[is.na(dfm[,i]), i] <- mean(dfm[,i], na.rm = TRUE)
-        }
-      }
-      else if (missing_val_char %in% c("", "?")) {
-        dfm[dfm == ""]  <- NA
-        dfm[dfm == "?"]  <- NA
-        for (i in 1:ncol(dfm)) {
-          dfm[is.na(dfm[,i]), i] <- mean(dfm[,i], na.rm = TRUE)
-        }
+      else if (is.nan(missing_val_char) | missing_val_char %in% c("", "?")) {
+        vec <- dfm[,col]
+        vec[is.nan(vec)] <- NA
+        vec[vec == ""]  <- NA
+        vec[vec == "?"]  <- NA
+        vec <- as.numeric(as.character(vec))
+        vec[is.na(vec)] <- mean(vec, na.rm = TRUE)
+        dfm[[col]] <- vec
       }
     }
     
-    else if (method == "DIP") {
+    else if (method == "MIP") {
       if (is.na(missing_val_char)) {
-        for (i in 1:ncol(dfm)) {
-          dfm[is.na(dfm[,i]), i] <- median(dfm[,i], na.rm = TRUE)
-        }
+        vec <- dfm[,col]
+        vec[is.na(vec)] <- median(vec, na.rm = TRUE)
+        dfm[[col]] <- vec
       }
-      else if (is.nan(missing_val_char)) {
-        dfm[is.nan(dfm)] <- NA
-        for (i in 1:ncol(dfm)) {
-          dfm[is.na(dfm[,i]), i] <- median(dfm[,i], na.rm = TRUE)
-        }
-      }
-      else if (missing_val_char %in% c("", "?")) {
-        dfm[dfm == ""]  <- NA
-        dfm[dfm == "?"]  <- NA
-        for (i in 1:ncol(dfm)) {
-          dfm[is.na(dfm[,i]), i] <- median(dfm[,i], na.rm = TRUE)
-        }
+      else if (is.nan(missing_val_char) | missing_val_char %in% c("", "?")) {
+        vec <- dfm[,col]
+        vec[is.nan(vec)] <- NA
+        vec[vec == ""]  <- NA
+        vec[vec == "?"]  <- NA
+        vec <- as.numeric(as.character(vec))
+        vec[is.na(vec)] <- median(vec, na.rm = TRUE)
+        dfm[[col]] <- vec
       }
     }
     
