@@ -18,6 +18,10 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 
   '%ni%' <- Negate('%in%')
   
+  if (is.character(col) == FALSE) {
+    stop("Error: column name is not applicable, expected a string instead")
+  }
+  
   if (col %ni% colnames(dfm)) {
     stop("Error: the specified column name is not in the data frame")
   }
