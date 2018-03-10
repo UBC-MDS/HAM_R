@@ -1,7 +1,7 @@
 context("Testing impute_missing")
 
-test_that("impute_missing(df, col, method, missing_val_char) returns a data frame or matrix without missing values
-          with different methods", {
+test_that("impute_missing(df, col, method, missing_val_char) returns a data frame without missing values in a specified column
+          with three simple methods", {
 
   # expected output
   expect_equal(
@@ -66,5 +66,5 @@ test_that("impute_missing(df, col, method, missing_val_char) returns a data fram
                "method is not applicable")
 
   expect_error(impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, 0)), "y", "CC", 0),
-               "Error: missing value format is not supported")
+               "Error: missing value format is not supported, expected one of blank space, "?", NA or NaN")
 })

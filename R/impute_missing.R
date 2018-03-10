@@ -1,18 +1,34 @@
-# Pre-process function
-todf <- function(dfm) {
-  if (!is.data.frame(dfm) & !is.matrix(dfm)) {
-    stop("Error: data format is not supported, expected a data frame or a matrix")
-  }
-
-  if (!is.data.frame(dfm)) {
-    return(as.data.frame(dfm))
-  }
-  else {
-    return(dfm)
-  }
-}
+#' Impute missing values in a specified column of a data frame or a numerical matrix with three simple methods
+#'
+#' @param dfm A data frame or a numerical matrix
+#' @param col A string of column name, if the input data is a matrix, this should be a string like "Vn" where n is an integer representing the index of column
+#' @param method A string of a method name, should be one of "CC", "MIP" and "DIP"
+#' @param missing_val_char A string of a missing value format, should be one of NA, NaN, "" and "?"
+#' @return A data frame having no missing values in the specified column
+#' @export
+#'
+#' @examples
+#' impute_missing(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
+#' impute_missing(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", NA)
+#'
+#' @family aggregate functions
+#' @seealso \code{\link{na.omit}} for the complete case
 
 impute_missing <- function(dfm, col, method, missing_val_char) {
+
+  # Pre-process function
+  todf <- function(dfm) {
+    if (!is.data.frame(dfm) & !is.matrix(dfm)) {
+      stop("Error: data format is not supported, expected a data frame or a matrix")
+    }
+
+    if (!is.data.frame(dfm)) {
+      return(as.data.frame(dfm))
+    }
+    else {
+      return(dfm)
+    }
+  }
 
   dfm = todf(dfm)
 
