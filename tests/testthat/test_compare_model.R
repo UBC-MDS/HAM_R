@@ -29,10 +29,10 @@ test_that("compare_model(feature, method),
     expect_error(compare_model(list(1, 2, 2, NA), "V2", "MIP", "NA"),
                  "Error: data format is not supported, expected a data frame or a matrix")
     
-    expect_error(compare_model(data.frame("exp" = c(1, 2, 3), "res" = c(0, 10, "NaN")),
+    expect_error(compare_model(data.frame("exp" = c(1, 2, 3), "res" = c(0, 10, NaN)),
                                 2,
                                 "CC",
-                                NaN),
+                                "NaN"),
                  "Error: column name is not applicable, expected a string instead")
     
     expect_error(compare_model(data.frame(exp = c(1, 2, 3), res = c(0, 10, "")),
