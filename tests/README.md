@@ -4,6 +4,7 @@
 
 | Condition | Test Function |
 |---|---|
+| "only NA and NaN are allowed for matrix, otherwise the input matrix is not numerical" | `expect_error(impute_missing(matrix(c(1,2,3, 6,8,""), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", ""))` |
 | "data format is not supported, expected a data frame or a matrix" | `expect_error(impute_missing(list(1, 2, 2, NA), "V2", "MIP", NA))` |
 | "column name is not applicable, expected a string instead" | `expect_error(impute_missing(data.frame("exp" = c(1, 2, 3), "res" = c(0, 10, NaN)))` |
 | "the specified column name is not in the data frame" | `expect_error(impute_missing(data.frame(exp = c(1, 2, 3), res = c(0, 10, "")), "dn", "CC", ""))` |
