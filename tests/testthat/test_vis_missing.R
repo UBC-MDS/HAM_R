@@ -10,6 +10,9 @@ p2 <- vis_missing(df, missing_val_char = "")
 
 p3 <- vis_missing(df, missing_val_char = " ")
 
+p4 <- vis_missing(as.matrix(df), missing_val_char = NA)
+
+
 
 ## this set of tests will no longer pass as the 
 test_that("vis_missing(df, colour, missing_val_char) returns a heatmap visualization of the missing values in a data set",{
@@ -55,4 +58,13 @@ test_that("vis_missing(df, colour, missing_val_char) returns a heatmap visualiza
 	  p3$labels$fill, "factor(value)"
 	)
 	
+	## branch coverage for matrix in todf
+	expect_equal(
+	  p4$labels$fill, "factor(value)"
+	)
+	
+	## branch coverage for todf when input is not a matrix or df 
+	expect_error(
+	  vis_missing(as.list(df), missing_val_char = NA), "data format is not supported, expected a data frame or a matrix"
+	)
 })
