@@ -78,6 +78,22 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
 #' @seealso \code{\link{na.omit}} for the complete case
 
 impute_missing <- function(dfm, col, method, missing_val_char) {
+  
+  if (is.matrix(dfm) & is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE) {
+    stop("Error: only NA and NaN are allowed for matrix, otherwise the input matrix is not numerical")
+  }
+  
+  if (is.character(col) == FALSE) {
+    stop("Error: column name is not applicable, expected a string instead")
+  }
+  
+  if (method %ni% c("CC", "MIP", "DIP")) {
+    stop("Error: method is not applicable")
+  }
+  
+  if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", "?")) {
+    stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
+  }
 
   # Pre-process function
   todf <- function(dfm) {
@@ -97,20 +113,8 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 
   '%ni%' <- Negate('%in%')
 
-  if (is.character(col) == FALSE) {
-    stop("Error: column name is not applicable, expected a string instead")
-  }
-
   if (col %ni% colnames(dfm)) {
     stop("Error: the specified column name is not in the data frame")
-  }
-
-  if (method %ni% c("CC", "MIP", "DIP")) {
-    stop("Error: method is not applicable")
-  }
-
-  if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", "?")) {
-    stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
 
   tryCatch({
