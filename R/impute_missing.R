@@ -1,27 +1,43 @@
-# Pre-process function
-todf <- function(dfm) {
-  if (!is.data.frame(dfm) & !is.matrix(dfm)) {
-    stop("Error: data format is not supported, expected a data frame or a matrix")
-  }
-  
-  if (!is.data.frame(dfm)) {
-    return(as.data.frame(dfm)) 
-  }
-  else {
-    return(dfm)
-  }
-}
+#' Impute missing values in a specified column of a data frame or a numerical matrix with three simple methods
+#'
+#' @param dfm A data frame or a numerical matrix
+#' @param col A string of column name, if the input data is a matrix, this should be a string like "Vn" where n is an integer representing the index of column
+#' @param method A string of a method name, should be one of "CC", "MIP" and "DIP"
+#' @param missing_val_char A string of a missing value format, should be one of NA, NaN, "" and "?"
+#' @return A data frame having no missing values in the specified column
+#' @export
+#'
+#' @examples
+#' impute_missing(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
+#' impute_missing(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", NA)
+#'
+#' @family aggregate functions
+#' @seealso \code{\link{na.omit}} for the complete case
 
 impute_missing <- function(dfm, col, method, missing_val_char) {
-  
+
+  # Pre-process function
+  todf <- function(dfm) {
+    if (!is.data.frame(dfm) & !is.matrix(dfm)) {
+      stop("Error: data format is not supported, expected a data frame or a matrix")
+    }
+
+    if (!is.data.frame(dfm)) {
+      return(as.data.frame(dfm))
+    }
+    else {
+      return(dfm)
+    }
+  }
+
   dfm = todf(dfm)
 
   '%ni%' <- Negate('%in%')
-  
+
   if (is.character(col) == FALSE) {
     stop("Error: column name is not applicable, expected a string instead")
   }
-  
+
   if (col %ni% colnames(dfm)) {
     stop("Error: the specified column name is not in the data frame")
   }
@@ -38,19 +54,20 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 
     if (method == "CC") {
       if (is.na(missing_val_char)) {
-        dfm = na.omit(dfm)
+        vec <- dfm[,col]
+        dfm = dfm[!is.na(vec),]
       }
-      
+
       else if (is.nan(missing_val_char) | missing_val_char %in% c("", "?")) {
         vec <- dfm[,col]
         vec[is.nan(vec)] <- NA
         vec[vec == ""]  <- NA
         vec[vec == "?"]  <- NA
         dfm[[col]] <- vec
-        dfm = na.omit(dfm)
+        dfm = dfm[!is.na(vec),]
       }
     }
-    
+
     else if (method == "MIP") {
       if (is.na(missing_val_char)) {
         vec <- dfm[,col]
@@ -67,8 +84,8 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         dfm[[col]] <- vec
       }
     }
-    
-    else if (method == "MIP") {
+
+    else if (method == "DIP") {
       if (is.na(missing_val_char)) {
         vec <- dfm[,col]
         vec[is.na(vec)] <- median(vec, na.rm = TRUE)
@@ -84,7 +101,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         dfm[[col]] <- vec
       }
     }
-    
+
     return(dfm)}, error = function(e) {
       stop("Error: Something unknown went wrong in impute_missing")})
 }
