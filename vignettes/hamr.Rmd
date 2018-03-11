@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-### Introduction
+# Introduction
 
 Our package intends to explore the pattern of missing values in users' dataset, imputes the missing values using three simple methods and compare the results of different methods. 
 
