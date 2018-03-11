@@ -90,25 +90,6 @@ Example:
 compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
 ```
 
-
-## Functions
-
-Currently, our package only handles continuous features.
-
-- Exploratory Function: use ggplot2/matplotlib/seaborn to plot patterns or proportions of missing values in the dataset:
-- `vis_missing()`: A heatmap that visualizes the missing values in the data set.
-    Input:
-        - dataset
-        - ggplot2 color scheme
-        - missing value character (NA, "", "?")
-- `compare_model()`: Compare summary statistics between various imputation methods
-    - Input: 
-      - original dataset containing missing values 
-      - methods that users want to compare
-    - Output: a summary table
-    - Call the above function for several methods
-    - Compare the summary statistics of what being imputed in the dataset using several available methods
-
 ## HAM in Python 
 This package is also available in [Python](https://github.com/UBC-MDS/HAM_Python). 
 

@@ -1,21 +1,21 @@
+suppressPackageStartupMessages({
+  library(ggplot2)
+  library(tidyverse)
+})
+
 #' Produces a visualization of all missing values in a data frame.
 #' The missing values are encoded by the missing value character, which is NA by default.
 #
-#' @title Visualize missing data 
+#' @title Visualize missing data
 #' @param df Input data frame or matrix
 #' @param colour Colour scheme for plotting
 #' @param missing_val_char the missing value character in the data frame, one of NA, "", " ", "?"
-#' @return Visualization of the missing data in a data set 
+#' @return Visualization of the missing data in a data set
 #' @author Jordan Dubchak, March 2018
 #' @export
 #'
 #' @examples
 #' vis_missing(df)
-
-suppressPackageStartupMessages({
-  library(ggplot2)
-  library(tidyverse)
-})
 
 vis_missing <- function(df, colour="default", missing_val_char=NA) {
   ## convert input to data frame if not already
@@ -36,7 +36,7 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
   })
 
   ## colour argument currently not working
-  
+
   ## check input of missing value character
   if (!missing_val_char %in% c(NA, "?", " ", "")){
     stop("Error: Missing Value Character not supported. Expected one of: NA, '?', '', ' '")
@@ -68,6 +68,7 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
 #' @param method A string of a method name, should be one of "CC", "MIP" and "DIP"
 #' @param missing_val_char A string of a missing value format, should be one of NA, NaN, "" and "?"
 #' @return A data frame having no missing values in the specified column
+#' @author Longlingzi Yao, March 2018
 #' @export
 #'
 #' @examples
@@ -78,19 +79,21 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
 #' @seealso \code{\link{na.omit}} for the complete case
 
 impute_missing <- function(dfm, col, method, missing_val_char) {
-  
+
+  '%ni%' <- Negate('%in%')
+
   if (is.matrix(dfm) & is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE) {
     stop("Error: only NA and NaN are allowed for matrix, otherwise the input matrix is not numerical")
   }
-  
+
   if (is.character(col) == FALSE) {
     stop("Error: column name is not applicable, expected a string instead")
   }
-  
+
   if (method %ni% c("CC", "MIP", "DIP")) {
     stop("Error: method is not applicable")
   }
-  
+
   if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", "?")) {
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
@@ -110,8 +113,6 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
   }
 
   dfm = todf(dfm)
-
-  '%ni%' <- Negate('%in%')
 
   if (col %ni% colnames(dfm)) {
     stop("Error: the specified column name is not in the data frame")
@@ -175,12 +176,12 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 
 #' @title Compare summary statistics between various imputation methods
 #' @description This function will call function `impute_missing()` for several methods and
-#' return a table with some statistical information of the specified feature 
+#' return a table with some statistical information of the specified feature
 #' before and after imputation of different methods
 #' @param df(ndarray) A dataset with missing values that needs to be imputed.
 #' @param feature (str) A string of column name, if the input data is a matrix, this should be a string like "Vn" where n is an integer representing the index of column
-#' @param methods (str or list)-- the methods that users want to compare 
-#'                 Supporting methods are: 
+#' @param methods (str or list)-- the methods that users want to compare
+#'                 Supporting methods are:
 #'                     CC 	- Complete Case
 #'                     MIP - Imputation with mean value
 #'                     DIP - Imputation with median value
@@ -200,38 +201,38 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #' @seealso \code{\link{na.omit}} for the complete case
 
 compare_model <- function(df, feature, methods, missing_val_char){
-  
+
   if (is.character(feature) == FALSE) {
     stop("Error: column name is not applicable, expected a string instead")
   }
-  
+
   if (!feature %in% colnames(df)) {
     stop("Error: the specified column name is not in the data frame")
   }
-  
+
   if (!method %in% c("CC", "MIP", "DIP")) {
     stop("Error: method is not applicable")
   }
-  
+
   if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", "?")) {
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
- 
-  result <- broom::tidy(df) %>% 
-    select(column,mean,sd,min,median,max) %>% 
+
+  result <- broom::tidy(df) %>%
+    select(column,mean,sd,min,median,max) %>%
     filter(column == feature)
   methods = c("CC","IMP")
-  
+
   for(method in meds){
     df_after <- impute_missing(df,feature,method,missing_val_char)
     name <- paste(feature,'_after_', method, sep="")
-    b <- broom::tidy(df_after) %>% 
+    b <- broom::tidy(df_after) %>%
       select(column,mean,sd,min,median,max) %>%
       filter(column == feature)
     b[feature] <- name
     result <- rbind(result,b)
   }
-  
+
   return (result)
 
 }
