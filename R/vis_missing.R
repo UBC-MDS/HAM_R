@@ -34,7 +34,7 @@ vis_missing <- function(df, colour="default", missing_val_char=NA){
   ## colour argument currently not working 
   
   ## check input of missing value character
-  if !missing_val_char %in% c(NA, "?", " ", ""){
+  if (!missing_val_char %in% c(NA, "?", " ", "")){
     stop("Error: Missing Value Character not supported. Expected one of: NA, '?', '', ' '")
   }
   ## convert NA values to 1s and all other values to 2 for plotting
