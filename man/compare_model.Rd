@@ -9,8 +9,8 @@ compare_model(df, feature, methods, missing_val_char)
 \arguments{
 \item{feature}{(str) A string of column name, if the input data is a matrix, this should be a string like "Vn" where n is an integer representing the index of column}
 
-\item{methods}{(str or list)-- the methods that users want to compare 
-Supporting methods are: 
+\item{methods}{(str or list)-- the methods that users want to compare
+Supporting methods are:
     CC     - Complete Case
     MIP - Imputation with mean value
     DIP - Imputation with median value}
@@ -28,7 +28,7 @@ a summary table comparing the summary statistics: count, mean, std, min, 25\%, 5
 }
 \description{
 This function will call function `impute_missing()` for several methods and
-return a table with some statistical information of the specified feature 
+return a table with some statistical information of the specified feature
 before and after imputation of different methods
 }
 \examples{
