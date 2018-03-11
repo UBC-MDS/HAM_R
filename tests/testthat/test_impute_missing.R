@@ -66,5 +66,5 @@ test_that("impute_missing(df, col, method, missing_val_char) returns a data fram
                "method is not applicable")
 
   expect_error(impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, 0)), "y", "CC", 0),
-               "Error: missing value format is not supported, expected one of blank space, "?", NA or NaN")
+               "Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
 })
