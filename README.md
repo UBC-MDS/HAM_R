@@ -18,7 +18,7 @@ We decided to make this project because we have not found any package that handl
 
 ### To install please execute the following in `R`:
 
-`devtools::install_github("hamr")`
+`devtools::install_github("UBC-MDS/hamr")`
 
 ### How to use:
 
