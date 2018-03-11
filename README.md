@@ -53,14 +53,34 @@ impute_missing(df, "res", "MIP", "")
 
 --
 
-Usage: `vis_missing(x)`  
+Usage: `compare_model(df, feature, methods, missing_val_char)`  
 Input:   
-Output: 
+
+- `df` (ndarray) -- the original dataset with missing values that needs to be imputed.
+  feature (str) -- name of a specified feature from the original dataset containing missing values that need to be imputed.
+
+- `methods` (str or list) -- the methods that users want to compare (default: ["CC","IMP"])
+
+  - Supporting methods are: 
+
+  ​            CC   - Complete Case
+  ​            MIP - Imputation with mean value
+  ​            DIP  - Imputation with median value
+
+- `missing_val_char` (str) -- missing value types. 
+
+  - Supporting types are:
+
+  ​            NaN - Not a Number
+  ​            ""      - Blank
+  ​            "?"     - Question mark
+
+Output:  a summary table comparing the summary statistics: count, mean, std, min, 25%, 50%, 75%, max.
 
 Example:
 
-```
-
+```python
+compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
 ```
 
 
