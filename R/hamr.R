@@ -1,10 +1,12 @@
 #' Produces a visualization of all missing values in a data frame.
 #' The missing values are encoded by the missing value character, which is NA by default.
 #
+#' @title Visualize missing data 
 #' @param df Input data frame or matrix
 #' @param colour Colour scheme for plotting
 #' @param missing_val_char the missing value character in the data frame, one of NA, "", " ", "?"
-#' @return plot
+#' @return Visualization of the missing data in a data set 
+#' @author Jordan Dubchak, March 2018
 #' @export
 #'
 #' @examples
