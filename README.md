@@ -10,6 +10,10 @@ Handle All Missing (Values)
 2. [Jordan Dubchak](https://github.com/jdubchak)
 3. [Linsey Yao](https://github.com/yllz)
 
+## To install please execute the following in R:
+
+devtools::install_github("hamr")
+
 ## Introduction
 
 Our package intends to explore the pattern of missing values in users' dataset and also imputes the missing values using several methods. 
@@ -26,12 +30,6 @@ Currently, our package only handles continuous features.
         - dataset
         - ggplot2 color scheme
         - missing value character (NA, "", "?")
-- `impute_missing()`: Impute the missing value (para: method (CC, Mean imputation, Most frequent element, ...))
-    - Input:
-      - dataset with missing values (if user don't want to impute the whole dataset, they will have to subset upfront)
-      - a method name
-      - missing value characters (NA, NaN, "", "?")
-    - Output: data frame/matrix with no missing values
 - `compare_model()`: Compare summary statistics between various imputation methods
     - Input: 
       - original dataset containing missing values 
@@ -39,6 +37,40 @@ Currently, our package only handles continuous features.
     - Output: a summary table
     - Call the above function for several methods
     - Compare the summary statistics of what being imputed in the dataset using several available methods
+
+## How to use
+
+Usage: vis_missing()
+Input: 
+Output: 
+
+Example:
+
+
+--
+
+Usage: impute_missing(dfm, col, method, missing_val_char)
+Input: 
+
+- dfm: a data frame or a matrix with missing values
+- col: a column name (string)
+- method: a method name ("CC", "MIP", "DIP")
+- missing_val_char: missing value characters (NA, NaN, "", "?")
+
+Output: a data frame with no missing values in the specified column
+
+Example:
+
+df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, "")
+impute_missing(df, "res", "MIP", "")
+--
+
+Usage: compare_model()
+Input: 
+Output: 
+
+Example:
+
 
 ## HAM in Python 
 This package is also available in [Python](https://github.com/UBC-MDS/HAM_Python). 
