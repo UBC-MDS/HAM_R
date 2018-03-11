@@ -169,9 +169,65 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
       stop("Error: Something unknown went wrong in impute_missing")})
 }
 
+#' @title Compare summary statistics between various imputation methods
+#' @description This function will call function `impute_missing()` for several methods and
+#' return a table with some statistical information of the specified feature 
+#' before and after imputation of different methods
+#' @param df(ndarray) A dataset with missing values that needs to be imputed.
+#' @param feature (str) A string of column name, if the input data is a matrix, this should be a string like "Vn" where n is an integer representing the index of column
+#' @param methods (str or list)-- the methods that users want to compare 
+#'                 Supporting methods are: 
+#'                     CC 	- Complete Case
+#'                     MIP - Imputation with mean value
+#'                     DIP - Imputation with median value
+#' @param missing_val_char A string of a missing value format:
+#' Supporting types are:
+#'      NaN - Not a Number
+#'      "" - Blank
+#'      "?" - Question mark
+#' @return a summary table comparing the summary statistics: count, mean, std, min, 25\%, 50\%, 75\%, max.
+#' @export
+#' @author Duong Vu, Master of Data Science, University of British Columbia
+#' @examples
+#' compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
+#' compare_model(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", NA)
+#'
+#' @family aggregate functions
+#' @seealso \code{\link{na.omit}} for the complete case
 
-# Compare_model function
-# A summary function that compares summary statistics between various imputation methods
-compare_model <- function(feature, methods){
+compare_model <- function(df, feature, methods, missing_val_char){
+  
+  if (is.character(feature) == FALSE) {
+    stop("Error: column name is not applicable, expected a string instead")
+  }
+  
+  if (!feature %in% colnames(df)) {
+    stop("Error: the specified column name is not in the data frame")
+  }
+  
+  if (!method %in% c("CC", "MIP", "DIP")) {
+    stop("Error: method is not applicable")
+  }
+  
+  if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", "?")) {
+    stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
+  }
+ 
+  result <- broom::tidy(df) %>% 
+    select(column,mean,sd,min,median,max) %>% 
+    filter(column == feature)
+  methods = c("CC","IMP")
+  
+  for(method in meds){
+    df_after <- impute_missing(df,feature,method,missing_val_char)
+    name <- paste(feature,'_after_', method, sep="")
+    b <- broom::tidy(df_after) %>% 
+      select(column,mean,sd,min,median,max) %>%
+      filter(column == feature)
+    b[feature] <- name
+    result <- rbind(result,b)
+  }
+  
+  return (result)
 
 }

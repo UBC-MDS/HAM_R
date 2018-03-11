@@ -28,4 +28,6 @@ impute_missing(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2"
 }
 \seealso{
 \code{\link{na.omit}} for the complete case
+
+Other aggregate functions: \code{\link{compare_model}}
 }
