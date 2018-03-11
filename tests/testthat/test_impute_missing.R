@@ -47,6 +47,12 @@ test_that("impute_missing(df, col, method, missing_val_char) returns a data fram
     data.frame(V1 = c(1, 2, 3), V2 = c(6, 8, 7)))
 
   # expected errors
+  expect_error(impute_missing(matrix(c(1,2,3, 6,8,""), nrow = 3, ncol = 2, byrow = FALSE),
+                              "V2",
+                              "DIP",
+                              ""),
+               "Error: only NA and NaN are allowed for matrix, otherwise the input matrix is not numerical")
+
   expect_error(impute_missing(list(1, 2, 2, NA), "V2", "MIP", NA),
                "Error: data format is not supported, expected a data frame or a matrix")
 
@@ -63,7 +69,7 @@ test_that("impute_missing(df, col, method, missing_val_char) returns a data fram
                "Error: the specified column name is not in the data frame")
 
   expect_error(impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, NA)), "y", "multi_im", NA),
-               "method is not applicable")
+               "Error: method is not applicable")
 
   expect_error(impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 10, 0)), "y", "CC", 0),
                "Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
