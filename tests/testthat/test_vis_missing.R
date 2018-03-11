@@ -1,20 +1,70 @@
 context("Testing the visualization of missing data")
 
-df <- read_csv("missing_valuesdf.csv")
+df <- read_csv("../missing_valuesdf.csv") %>% select(-X1)
 
-g <- vis_missing(df, missing_val_char = "NA")
+g <- vis_missing(df, missing_val_char = NA)
 
-test_that("vis_missing(df, colour, missing_val_char) returns a heatmap visualization of the missing values in a data set"), {
+p <- vis_missing(df, missing_val_char="?")
 
-	expect_equal(
-		, g$coordinates$limits$x == c(50, 0) 
+p2 <- vis_missing(df, missing_val_char = "")
+
+p3 <- vis_missing(df, missing_val_char = " ")
+
+p4 <- vis_missing(as.matrix(df), missing_val_char = NA)
+
+
+
+## this set of tests will no longer pass as the 
+test_that("vis_missing(df, colour, missing_val_char) returns a heatmap visualization of the missing values in a data set",{
+
+	expect_equal(is.null(g$scales), FALSE
 		)
 
 	expect_equal(
-		, g$coordinates$limits$y == c(0, 4) 
+	  g$theme$text$face, "plain"
 		)
 
 	expect_equal(
-		, is.null(g$layer[[1]]) == FALSE  
+		 is.null(g$layer[[1]]), FALSE  
 		)
-}
+	
+	# expect_error(
+	#  p, "Missing Value Character not supported. Expected one of: NA, '?', '', ' '" 
+	# )
+	
+	expect_equal(
+	  p$data[1,1], 1
+	)
+	
+	expect_equal(
+	  p$guides$fill$name, "legend"
+	)
+	
+	## these next __ tests are the same, but using different missing value characters to ensure 
+	## they work (i.e. they should all do the same thing, regardless of the inputted missing val char)
+	expect_equal(
+	  p$labels$fill, "factor(value)"
+	)
+	
+	expect_equal(
+	  g$labels$fill, "factor(value)"
+	)
+	
+	expect_equal(
+	  p2$labels$fill, "factor(value)"
+	)
+	
+	expect_equal(
+	  p3$labels$fill, "factor(value)"
+	)
+	
+	## branch coverage for matrix in todf
+	expect_equal(
+	  p4$labels$fill, "factor(value)"
+	)
+	
+	## branch coverage for todf when input is not a matrix or df 
+	expect_error(
+	  vis_missing(as.list(df), missing_val_char = NA), "data format is not supported, expected a data frame or a matrix"
+	)
+})
