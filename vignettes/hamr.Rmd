@@ -95,7 +95,10 @@ impute_missing(dfm, "y", "MIP", NaN)
 
 **Introduction:**
 
-compare the results of different methods
+Compare the results of different methods.
+* This function will call function `impute_missing()` for several methods and
+return a table with some statistical information of the specified feature 
+before and after imputation of different methods
 
 ## Function
 
