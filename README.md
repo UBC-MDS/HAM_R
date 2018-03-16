@@ -54,8 +54,12 @@ Output: a data frame with no missing values in the specified column
 Example:
 
 ```
-df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, "")
-impute_missing(df, "res", "MIP", "")
+> df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, ""))
+> impute_missing(df, "res", "MIP", "")
+  exp res
+1   1   0
+2   2  10
+3   3   5
 ```
 
 --
