@@ -94,7 +94,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
     stop("Error: method is not applicable")
   }
 
-  if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", "?")) {
+  if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", " ", "?")) {
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
 
@@ -126,10 +126,11 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         dfm = dfm[!is.na(vec),]
       }
 
-      else if (is.nan(missing_val_char) | missing_val_char %in% c("", "?")) {
+      else if (is.nan(missing_val_char) | missing_val_char %in% c("", " ", "?")) {
         vec <- dfm[,col]
         vec[is.nan(vec)] <- NA
         vec[vec == ""]  <- NA
+        vec[vec == " "]  <- NA
         vec[vec == "?"]  <- NA
         dfm[[col]] <- vec
         dfm = dfm[!is.na(vec),]
@@ -142,10 +143,11 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         vec[is.na(vec)] <- mean(vec, na.rm = TRUE)
         dfm[[col]] <- vec
       }
-      else if (is.nan(missing_val_char) | missing_val_char %in% c("", "?")) {
+      else if (is.nan(missing_val_char) | missing_val_char %in% c("", " ", "?")) {
         vec <- dfm[,col]
         vec[is.nan(vec)] <- NA
         vec[vec == ""]  <- NA
+        vec[vec == " "]  <- NA
         vec[vec == "?"]  <- NA
         vec <- as.numeric(as.character(vec))
         vec[is.na(vec)] <- mean(vec, na.rm = TRUE)
@@ -159,10 +161,11 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         vec[is.na(vec)] <- median(vec, na.rm = TRUE)
         dfm[[col]] <- vec
       }
-      else if (is.nan(missing_val_char) | missing_val_char %in% c("", "?")) {
+      else if (is.nan(missing_val_char) | missing_val_char %in% c("", " ", "?")) {
         vec <- dfm[,col]
         vec[is.nan(vec)] <- NA
         vec[vec == ""]  <- NA
+        vec[vec == " "]  <- NA
         vec[vec == "?"]  <- NA
         vec <- as.numeric(as.character(vec))
         vec[is.na(vec)] <- median(vec, na.rm = TRUE)
