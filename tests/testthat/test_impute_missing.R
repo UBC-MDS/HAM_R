@@ -26,6 +26,13 @@ test_that("impute_missing(df, col, method, missing_val_char) returns a data fram
     data.frame(x = c(1, 2, 3), y = c(0, 10, 5)))
 
   expect_equal(
+    impute_missing(data.frame(x = c(1, 2, 3), y = c(0, 5, " ")),
+                   "y",
+                   "MIP",
+                   " "),
+    data.frame(x = c(1, 2, 3), y = c(0.0, 5.0, 2.5)))
+
+  expect_equal(
     impute_missing(matrix(c(1,2,3, 0,10,NaN), nrow = 3, ncol = 2, byrow = FALSE),
                    "V2",
                    "MIP",
