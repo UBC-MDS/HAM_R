@@ -203,7 +203,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #' @family aggregate functions
 #' @seealso \code{\link{na.omit}} for the complete case
 
-compare_model <- function(df, feature, methods, missing_val_char){
+compare_model <- function(df, feature, method, missing_val_char){
 
   if (!is.character(feature)) {
     stop("Error: column name is not applicable, expected a string instead")
