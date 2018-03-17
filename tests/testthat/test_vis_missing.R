@@ -68,6 +68,7 @@ test_that("vis_missing(df, colour, missing_val_char) returns a heatmap visualiza
 	  vis_missing(as.list(df), missing_val_char = NA), "data format is not supported, expected a data frame or a matrix"
 	)
 	
+    ## this is error is found in issue ___. 
 	## branch coverage for unacceptable missing value input  - this fails, but the output is the exact same
     #expect_error(
     # vis_missing(df, missing_val_char = "i"), "Error: Missing Value Character not supported. Expected one of: NA, '?', '', ' '"
