@@ -213,7 +213,7 @@ compare_model <- function(df, feature, methods, missing_val_char){
     stop("Error: the specified column name is not in the data frame")
   }
 
-  if (!method %in% c("CC", "MIP", "DIP")) {
+  if (!all(methods %in% c("CC", "MIP", "DIP"))) {
     stop("Error: method is not applicable")
   }
 
