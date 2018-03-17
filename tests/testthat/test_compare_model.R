@@ -1,5 +1,4 @@
 context("Testing compare_model")
-library(tidyverse)
 df <- read.csv("../missing_valuesdf.csv")
 
 meds <- c("CC","MIP")

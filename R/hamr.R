@@ -224,9 +224,9 @@ compare_model <- function(df, feature, methods, missing_val_char){
   result <- broom::tidy(df) %>%
     select(column,mean,sd,min,median,max) %>%
     filter(column == feature)
-  methods = c("CC","IMP")
+  methods = c("CC","MIP")
 
-  for(method in meds){
+  for(method in methods){
     df_after <- impute_missing(df,feature,method,missing_val_char)
     name <- paste(feature,'_after_', method, sep="")
     b <- broom::tidy(df_after) %>%
