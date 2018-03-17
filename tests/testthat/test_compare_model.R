@@ -1,6 +1,6 @@
 context("Testing compare_model")
 library(tidyverse)
-df <- read.csv("../dummy_dataset.csv")
+df <- read.csv("../missing_valuesdf.csv")
 
 meds <- c("CC","IMP")
 result <- compare_model('col1', methods = meds)
