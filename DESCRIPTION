@@ -1,14 +1,21 @@
 Package: hamr
 Title: What the Package Does (one line, title case)
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Duong", "Vu", email = "dqvu.ubc@gmail.com", role = c("aut", "cre")), 
+    person("Linsey", "Yao", role = c("aut")),
+    person("Jordan", "Dubchak",role = c("aut"))
+    )
+Description: Our package intends to explore the pattern of missing values in users' dataset, 
+    imputes the missing values using three simple methods 
+    and compare the results of different methods.
 Depends: R (>= 3.4.2)
-License: What license is it under?
+License: MIT | file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: ggplot2,
-    tidyverse
+Imports: ggplot2, 
+    dplyr, 
+    magrittr
 Suggests: testthat,
     knitr,
     rmarkdown

@@ -32,5 +32,5 @@ impute_missing(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2"
 Other aggregate functions: \code{\link{compare_model}}
 }
 \author{
-Longlingzi Yao, March 2018
+Linsey Yao, March 2018
 }
