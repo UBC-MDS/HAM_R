@@ -3,3 +3,6 @@
 export(compare_model)
 export(impute_missing)
 export(vis_missing)
+import(dplyr)
+import(ggplot2)
+import(magrittr)

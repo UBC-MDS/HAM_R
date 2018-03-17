@@ -1,8 +1,3 @@
-suppressPackageStartupMessages({
-  library(ggplot2)
-  library(tidyverse)
-})
-
 #' Produces a visualization of all missing values in a data frame.
 #' The missing values are encoded by the missing value character, which is NA by default.
 #
@@ -12,6 +7,10 @@ suppressPackageStartupMessages({
 #' @param missing_val_char the missing value character in the data frame, one of NA, "", " ", "?"
 #' @return Visualization of the missing data in a data set
 #' @author Jordan Dubchak, March 2018
+#'
+#' @import ggplot2
+#' @import magrittr
+#'
 #' @export
 #'
 #' @examples
@@ -68,7 +67,8 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
 #' @param method A string of a method name, should be one of "CC", "MIP" and "DIP"
 #' @param missing_val_char A string of a missing value format, should be one of NA, NaN, "" and "?"
 #' @return A data frame having no missing values in the specified column
-#' @author Longlingzi Yao, March 2018
+#' @author Linsey Yao, March 2018
+#'
 #' @export
 #'
 #' @examples
@@ -194,6 +194,10 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #'      "" - Blank
 #'      "?" - Question mark
 #' @return a summary table comparing the summary statistics: count, mean, std, min, 25\%, 50\%, 75\%, max.
+#'
+#' @import dplyr
+#' @import magrittr
+#'
 #' @export
 #' @author Duong Vu, Master of Data Science, University of British Columbia
 #' @examples
