@@ -1,8 +1,8 @@
 # hamr
 
-Handle All Missing (Values) 
+[![Build Status](https://travis-ci.org/UBC-MDS/hamr.svg?branch=master)](https://travis-ci.org/UBC-MDS/hamr)
 
-*Feb 8th, 2018*
+Handle All Missing (Values) 
 
 ## Project contributors:
 
