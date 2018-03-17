@@ -12,6 +12,8 @@ suppressPackageStartupMessages({
 #' @param missing_val_char the missing value character in the data frame, one of NA, "", " ", "?"
 #' @return Visualization of the missing data in a data set
 #' @author Jordan Dubchak, March 2018
+#' @import ggplot2
+#' @importFrom ("stats", "filter", "median", "sd")
 #' @export
 #'
 #' @examples
@@ -194,6 +196,8 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #'      "" - Blank
 #'      "?" - Question mark
 #' @return a summary table comparing the summary statistics: count, mean, std, min, 25\%, 50\%, 75\%, max.
+#' @import tidyverse
+#' @importFrom ("stats", "filter", "median", "sd")
 #' @export
 #' @author Duong Vu, Master of Data Science, University of British Columbia
 #' @examples
