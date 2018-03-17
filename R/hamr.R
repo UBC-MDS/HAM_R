@@ -205,7 +205,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 
 compare_model <- function(df, feature, methods, missing_val_char){
 
-  if (is.character(feature) == FALSE) {
+  if (!is.character(feature)) {
     stop("Error: column name is not applicable, expected a string instead")
   }
 
@@ -217,7 +217,7 @@ compare_model <- function(df, feature, methods, missing_val_char){
     stop("Error: method is not applicable")
   }
 
-  if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", "?")) {
+  if (!missing_val_char %in% c(NA, NaN, "?", " ", "")) {
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
 
@@ -232,7 +232,7 @@ compare_model <- function(df, feature, methods, missing_val_char){
     b <- broom::tidy(df_after) %>%
       select(column,mean,sd,min,median,max) %>%
       filter(column == feature)
-    b[feature] <- name
+    b$column[1] <- name
     result <- rbind(result,b)
   }
 
