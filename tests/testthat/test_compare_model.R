@@ -27,7 +27,7 @@ test_that("compare_model(df,feature, method,missing_val_type),
     
     # expected errors
     expect_error(compare_model(list(1, 2, 2, NA), "V2", "MIP", "NA"),
-                 "Error: data format is not supported, expected a data frame or a matrix")
+                 "Error: the specified column name is not in the data frame")
     
     expect_error(compare_model(data.frame("exp" = c(1, 2, 3), "res" = c(0, 10, NaN)),
                                 2,
