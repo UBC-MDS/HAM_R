@@ -18,6 +18,8 @@ We decided to make this project because we have not found any package that handl
 
 ### To install please execute the following in `R`:
 
+`devtools::load_all()`
+
 `devtools::install_github("UBC-MDS/hamr")`
 
 ### How to use:
@@ -54,8 +56,12 @@ Output: a data frame with no missing values in the specified column
 Example:
 
 ```
-df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, "")
-impute_missing(df, "res", "MIP", "")
+> df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, ""))
+> impute_missing(df, "res", "MIP", "")
+  exp res
+1   1   0
+2   2  10
+3   3   5
 ```
 
 --
