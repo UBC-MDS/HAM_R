@@ -32,6 +32,7 @@ return a table with some statistical information of the specified feature
 before and after imputation of different methods
 }
 \examples{
+library(tidyverse)
 compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
 compare_model(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", NA)
 
@@ -42,5 +43,5 @@ compare_model(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2",
 Other aggregate functions: \code{\link{impute_missing}}
 }
 \author{
-Duong Vu, Master of Data Science, University of British Columbia
+Duong Vu, 2018
 }
