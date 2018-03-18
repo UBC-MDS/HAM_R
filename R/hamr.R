@@ -19,16 +19,16 @@
 vis_missing <- function(df, colour="default", missing_val_char=NA) {
   ## convert input to data frame if not already
   tryCatch({
-    todf <- function(dfm) {
-      if (!is.data.frame(dfm) & !is.matrix(dfm)) {
+    todf <- function(df) {
+      if (!is.data.frame(df) & !is.matrix(df)) {
         stop("Error: data format is not supported, expected a data frame or a matrix")
       }
 
-      if (!is.data.frame(dfm)) {
-        return(as.data.frame(dfm))
+      if (!is.data.frame(df)) {
+        return(as.data.frame(df))
       }
       else {
-        return(dfm)
+        return(df)
       }
     }
     df <- todf(df)
@@ -39,6 +39,18 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
   ## check input of missing value character
   if (!missing_val_char %in% c(NA, "?", " ", "")){
     stop("Error: Missing Value Character not supported. Expected one of: NA, '?', '', ' '")
+  } elif (missing_val_char %in% c("?", " ", "")){
+    for (col in colnames(df)){
+      incl_missing <- lapply(df[col], function(x) missing_val_char %in% x)
+      for (var in names(incl_missing)){
+        if(incl_missing[var] == TRUE){
+          df[df == missing_val_char] <- NA
+          for(char in df[var]){
+            df[var] <- (as.numeric(as.character(char)))
+          }
+        }
+      }
+    }
   }
   ## convert NA values to 1s and all other values to 2 for plotting
   binary <- ifelse(is.na(df), 1, 2)

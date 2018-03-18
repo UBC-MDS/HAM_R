@@ -40,6 +40,7 @@ df <- data.frame(x = c(1, " ", 3), y = c(1, 8, 9))
 vis_missing(df, missing_val_char = " ")
 
 ```
+![vis_missing](img/vis_missing.png)
 
 --
 
