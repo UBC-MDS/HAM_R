@@ -23,7 +23,7 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
       if (!is.data.frame(dfm) & !is.matrix(dfm)) {
         stop("Error: data format is not supported, expected a data frame or a matrix")
       }
-
+      
       if (!is.data.frame(dfm)) {
         return(as.data.frame(dfm))
       }
@@ -33,9 +33,9 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
     }
     df <- todf(df)
   })
-
+  
   ## colour argument currently not working
-
+  
   ## check input of missing value character
   if (!missing_val_char %in% c(NA, "?", " ", "")){
     stop("Error: Missing Value Character not supported. Expected one of: NA, '?', '', ' '")
@@ -44,8 +44,8 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
   binary <- ifelse(is.na(df), 1, 2)
   ## reshape for plotting
   df_binary <- reshape2::melt(binary)
-
-
+  
+  
   ggplot(df_binary, aes(Var2, Var1)) +
     geom_tile(aes(fill=factor(value))) +
     labs(x="", y="", colour="") +
@@ -79,31 +79,31 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
 #' @seealso \code{\link{na.omit}} for the complete case
 
 impute_missing <- function(dfm, col, method, missing_val_char) {
-
+  
   '%ni%' <- Negate('%in%')
-
+  
   if (is.matrix(dfm) & is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE) {
     stop("Error: only NA and NaN are allowed for matrix, otherwise the input matrix is not numerical")
   }
-
+  
   if (is.character(col) == FALSE) {
     stop("Error: column name is not applicable, expected a string instead")
   }
-
+  
   if (method %ni% c("CC", "MIP", "DIP")) {
     stop("Error: method is not applicable")
   }
-
+  
   if (is.na(missing_val_char) == FALSE & is.nan(missing_val_char) == FALSE & missing_val_char %ni% c("", " ", "?")) {
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
-
+  
   # Pre-process function
   todf <- function(dfm) {
     if (!is.data.frame(dfm) & !is.matrix(dfm)) {
       stop("Error: data format is not supported, expected a data frame or a matrix")
     }
-
+    
     if (!is.data.frame(dfm)) {
       return(as.data.frame(dfm))
     }
@@ -111,21 +111,21 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
       return(dfm)
     }
   }
-
+  
   dfm = todf(dfm)
-
+  
   if (col %ni% colnames(dfm)) {
     stop("Error: the specified column name is not in the data frame")
   }
-
+  
   tryCatch({
-
+    
     if (method == "CC") {
       if (is.na(missing_val_char)) {
         vec <- dfm[,col]
         dfm = dfm[!is.na(vec),]
       }
-
+      
       else if (is.nan(missing_val_char) | missing_val_char %in% c("", " ", "?")) {
         vec <- as.numeric(as.character(dfm[,col]))
         vec[is.nan(vec)] <- NA
@@ -136,7 +136,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         dfm = dfm[!is.na(vec),]
       }
     }
-
+    
     else if (method == "MIP") {
       if (is.na(missing_val_char)) {
         vec <- dfm[,col]
@@ -154,7 +154,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         dfm[[col]] <- vec
       }
     }
-
+    
     else if (method == "DIP") {
       if (is.na(missing_val_char)) {
         vec <- dfm[,col]
@@ -172,7 +172,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
         dfm[[col]] <- vec
       }
     }
-
+    
     return(dfm)}, error = function(e) {
       stop("Error: Something unknown went wrong in impute_missing")})
 }
@@ -199,8 +199,9 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #' @import magrittr
 #'
 #' @export
-#' @author Duong Vu, Master of Data Science, University of British Columbia
+#' @author Duong Vu, 2018
 #' @examples
+#' library(tidyverse)
 #' compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
 #' compare_model(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", NA)
 #'
@@ -208,28 +209,28 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #' @seealso \code{\link{na.omit}} for the complete case
 
 compare_model <- function(df, feature, methods, missing_val_char){
-
+  
   if (!is.character(feature)) {
     stop("Error: column name is not applicable, expected a string instead")
   }
-
+  
   if (!feature %in% colnames(df)) {
     stop("Error: the specified column name is not in the data frame")
   }
-
+  
   if (!all(methods %in% c("CC", "MIP", "DIP"))) {
     stop("Error: method is not applicable")
   }
-
+  
   if (!missing_val_char %in% c(NA, NaN, "?", " ", "")) {
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
+  
+  result <- data.frame(column = 0,mean = 0,sd = 0,min= 0,median=0,max=0)
+  
 
-  result <- broom::tidy(df) %>%
-    select(column,mean,sd,min,median,max) %>%
-    filter(column == feature)
   methods = c("CC","MIP")
-
+  
   for(method in methods){
     df_after <- impute_missing(df,feature,method,missing_val_char)
     name <- paste(feature,'_after_', method, sep="")
@@ -239,7 +240,7 @@ compare_model <- function(df, feature, methods, missing_val_char){
     b$column[1] <- name
     result <- rbind(result,b)
   }
-
-  return (result)
-
+  
+  return (result[-1,])
+  
 }

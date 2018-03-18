@@ -1,3 +1,5 @@
+library(tidyverse)
+library(stats)
 context("Testing compare_model")
 df <- read.csv("../missing_valuesdf.csv")
 
