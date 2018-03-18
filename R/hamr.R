@@ -127,7 +127,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
       }
 
       else if (is.nan(missing_val_char) | missing_val_char %in% c("", " ", "?")) {
-        vec <- dfm[,col]
+        vec <- as.numeric(as.character(dfm[,col]))
         vec[is.nan(vec)] <- NA
         vec[vec == ""]  <- NA
         vec[vec == " "]  <- NA
