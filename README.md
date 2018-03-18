@@ -24,14 +24,13 @@ We decided to make this project because we have not found any package that handl
 
 ### How to use:
 
-Usage: `vis_missing(dfm, colour="default", missing_val_char = NA)`  
+Usage: `vis_missing(dfm, missing_val_char = NA)`  
 Input: 
 
 - `dfm`: a data frame or matrix containing missing values
-- `colour`: a base R or `ggplot2` colour map, defaults to `ggplot2` default
 - `missing_val_char`: the character representing missing values in data frame. One of: c(NA, " ", "", "?")
 
-Output: A visualization of missing data across the data frame. 
+Output: A visualization of missing data across the data frame. Note: currently colour changes and annotations are not supported. This will be included in later versions. 
 
 Example:
 
