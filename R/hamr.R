@@ -10,13 +10,15 @@
 #'
 #' @import ggplot2
 #' @import magrittr
+#' @import reshape2
 #'
 #' @export
 #'
 #' @examples
-#' vis_missing(df)
+#' vis_missing(data.frame(ex = c(1, 2, 3), bf = c(6, 8, NA)))
 
 vis_missing <- function(df, colour="default", missing_val_char=NA) {
+
   ## convert input to data frame if not already
   tryCatch({
     todf <- function(df) {
@@ -31,9 +33,9 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
         return(df)
       }
     }
-    df <- todf(df)
   })
 
+  df <- todf(df)
   ## colour argument currently not working
 
   ## check input of missing value character
@@ -58,15 +60,15 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
   df_binary <- reshape2::melt(binary)
 
 
-  ggplot(df_binary, aes(Var2, Var1)) +
-    geom_tile(aes(fill=factor(value))) +
-    labs(x="", y="", colour="") +
-    guides(fill=guide_legend(title=NULL)) +
-    scale_fill_discrete(breaks=c(1,2), labels=c("Missing\nValue", "Not Missing\nValue")) +
-    theme_bw() +
+  ggplot2::ggplot(df_binary, ggplot2::aes(x=df_binary[,2], y=df_binary[,1])) +
+    ggplot2::geom_tile(aes(fill=factor(value))) +
+    ggplot2::labs(x="", y="", colour="") +
+    ggplot2::guides(fill=guide_legend(title=NULL)) +
+    ggplot2::scale_fill_discrete(breaks=c(1,2), labels=c("Missing\nValue", "Not Missing\nValue")) +
+    ggplot2::theme_bw() +
     ## https://stackoverflow.com/questions/35090883/remove-all-of-x-axis-labels-in-ggplot
     ## https://stackoverflow.com/questions/10861773/remove-grid-background-color-and-top-and-right-borders-from-ggplot2
-    theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
+    ggplot2::theme(axis.text.y = element_blank(), axis.ticks.y = element_blank(),
           axis.ticks.x= element_blank(), panel.grid.major = element_blank(),
           panel.border = element_blank(), panel.grid.minor = element_blank())
 }
@@ -80,6 +82,8 @@ vis_missing <- function(df, colour="default", missing_val_char=NA) {
 #' @param missing_val_char A string of a missing value format, should be one of NA, NaN, "" and "?"
 #' @return A data frame having no missing values in the specified column
 #' @author Linsey Yao, March 2018
+#'
+#' @importFrom stats median
 #'
 #' @export
 #'
@@ -139,7 +143,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
       }
 
       else if (is.nan(missing_val_char) | missing_val_char %in% c("", " ", "?")) {
-        vec <- dfm[,col]
+        vec <- as.numeric(as.character(dfm[,col]))
         vec[is.nan(vec)] <- NA
         vec[vec == ""]  <- NA
         vec[vec == " "]  <- NA
@@ -193,7 +197,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #' @description This function will call function `impute_missing()` for several methods and
 #' return a table with some statistical information of the specified feature
 #' before and after imputation of different methods
-#' @param df(ndarray) A dataset with missing values that needs to be imputed.
+#' @param df A dataset with missing values that needs to be imputed.
 #' @param feature (str) A string of column name, if the input data is a matrix, this should be a string like "Vn" where n is an integer representing the index of column
 #' @param methods (str or list)-- the methods that users want to compare
 #'                 Supporting methods are:
@@ -209,13 +213,14 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #'
 #' @import dplyr
 #' @import magrittr
+#' @import broom
 #'
 #' @export
-#' @author Duong Vu, Master of Data Science, University of British Columbia
+#' @author Duong Vu, 2018
 #' @examples
-#' compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
-#' compare_model(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", NA)
-#'
+#' df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, ""))
+#' compare_model(df, "res", c("CC","MIP"), "")
+#' 
 #' @family aggregate functions
 #' @seealso \code{\link{na.omit}} for the complete case
 
@@ -237,21 +242,20 @@ compare_model <- function(df, feature, methods, missing_val_char){
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
 
-  result <- broom::tidy(df) %>%
-    select(column,mean,sd,min,median,max) %>%
-    filter(column == feature)
+  result <- data.frame(column = 0,mean = 0,sd = 0,min= 0,median=0,max=0)
+
   methods = c("CC","MIP")
 
   for(method in methods){
     df_after <- impute_missing(df,feature,method,missing_val_char)
     name <- paste(feature,'_after_', method, sep="")
     b <- broom::tidy(df_after) %>%
-      select(column,mean,sd,min,median,max) %>%
-      filter(column == feature)
+      dplyr::select(column,mean,sd,min,median,max) %>%
+      dplyr::filter(column == feature)
     b$column[1] <- name
     result <- rbind(result,b)
   }
 
-  return (result)
+  return (result[-1,])
 
 }

@@ -1,5 +1,5 @@
 Package: hamr
-Title: What the Package Does (one line, title case)
+Title: Handle All Missing Values
 Version: 0.0.0.9000
 Authors@R: c(
     person("Duong", "Vu", email = "dqvu.ubc@gmail.com", role = c("aut", "cre")), 
@@ -10,14 +10,16 @@ Description: Our package intends to explore the pattern of missing values in use
     imputes the missing values using three simple methods 
     and compare the results of different methods.
 Depends: R (>= 3.4.2)
-License: MIT | file LICENSE
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: ggplot2, 
-    dplyr, 
-    magrittr
+Imports: ggplot2,
+    reshape2,
+    magrittr,
+    dplyr,
+    broom
 Suggests: testthat,
     knitr,
     rmarkdown
-RoxygenNote: 6.0.1
 VignetteBuilder: knitr
+RoxygenNote: 6.0.1

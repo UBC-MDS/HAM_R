@@ -1,6 +1,8 @@
+library(utils)
+
 context("Testing the visualization of missing data")
 
-df <- read_csv("../missing_valuesdf.csv") %>% select(-X1)
+df <- read.csv("../missing_valuesdf.csv")
 
 g <- vis_missing(df, missing_val_char = NA)
 

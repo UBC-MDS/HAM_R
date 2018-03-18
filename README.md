@@ -30,7 +30,7 @@ Input:
 - `dfm`: a data frame or matrix containing missing values
 - `colour`: a base R or `ggplot2` colour map, defaults to `ggplot2` default
 - `missing_val_char`: the character representing missing values in data frame. One of: c(NA, " ", "", "?")
- 
+
 Output: A visualization of missing data across the data frame. 
 
 Example:
@@ -94,9 +94,16 @@ Output:  a summary table comparing the summary statistics: count, mean, std, min
 Example:
 
 ```python
-compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
+> df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, ""))
+> compare_model(df, "res", c("CC","MIP"), "")
+         column mean       sd min median max
+2  res_after_CC    5 7.071068   0      5  10
+3 res_after_MIP    5 5.000000   0      5  10
 ```
 
+--
+
 ## HAM in Python 
+
 This package is also available in [Python](https://github.com/UBC-MDS/HAM_Python). 
 
