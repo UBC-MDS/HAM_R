@@ -21,7 +21,7 @@ Produces a visualization of all missing values in a data frame.
 The missing values are encoded by the missing value character, which is NA by default.
 }
 \examples{
-vis_missing(df)
+vis_missing(data.frame(ex = c(1, 2, 3), bf = c(6, 8, NA)))
 }
 \author{
 Jordan Dubchak, March 2018

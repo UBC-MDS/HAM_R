@@ -7,6 +7,8 @@
 compare_model(df, feature, methods, missing_val_char)
 }
 \arguments{
+\item{df}{A dataset with missing values that needs to be imputed.}
+
 \item{feature}{(str) A string of column name, if the input data is a matrix, this should be a string like "Vn" where n is an integer representing the index of column}
 
 \item{methods}{(str or list)-- the methods that users want to compare
@@ -20,8 +22,6 @@ Supporting types are:
      NaN - Not a Number
      "" - Blank
      "?" - Question mark}
-
-\item{df(ndarray)}{A dataset with missing values that needs to be imputed.}
 }
 \value{
 a summary table comparing the summary statistics: count, mean, std, min, 25\%, 50\%, 75\%, max.
@@ -32,9 +32,7 @@ return a table with some statistical information of the specified feature
 before and after imputation of different methods
 }
 \examples{
-library(tidyverse)
 compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
-compare_model(matrix(c(1,2,3, 6,8,NA), nrow = 3, ncol = 2, byrow = FALSE), "V2", "DIP", NA)
 
 }
 \seealso{
