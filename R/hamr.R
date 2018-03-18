@@ -195,6 +195,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #' @return a summary table comparing the summary statistics: count, mean, std, min, 25\%, 50\%, 75\%, max.
 #'
 #' @import tidyverse
+#' @import stats
 #' @export
 #' @author Duong Vu, 2018
 #' @examples
@@ -223,9 +224,9 @@ compare_model <- function(df, feature, methods, missing_val_char){
     stop("Error: missing value format is not supported, expected one of blank space, a question mark, NA and NaN")
   }
   
-  result <- broom::tidy(df) %>%
-    select(column,mean,sd,min,median,max) %>%
-    filter(column == feature)
+  result <- data.frame(column = 0,mean = 0,sd = 0,min= 0,median=0,max=0)
+  
+
   methods = c("CC","MIP")
   
   for(method in methods){
@@ -238,6 +239,6 @@ compare_model <- function(df, feature, methods, missing_val_char){
     result <- rbind(result,b)
   }
   
-  return (result)
+  return (result[-1,])
   
 }
