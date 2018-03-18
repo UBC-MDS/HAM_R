@@ -9,6 +9,7 @@
 #' @author Jordan Dubchak, March 2018
 #'
 #' @import ggplot2
+#' @import magrittr
 #'
 #' @export
 #'
@@ -126,7 +127,7 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
       }
       
       else if (is.nan(missing_val_char) | missing_val_char %in% c("", " ", "?")) {
-        vec <- dfm[,col]
+        vec <- as.numeric(as.character(dfm[,col]))
         vec[is.nan(vec)] <- NA
         vec[vec == ""]  <- NA
         vec[vec == " "]  <- NA
@@ -194,8 +195,9 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #'      "?" - Question mark
 #' @return a summary table comparing the summary statistics: count, mean, std, min, 25\%, 50\%, 75\%, max.
 #'
-#' @import tidyverse
-#' @import stats
+#' @import dplyr
+#' @import magrittr
+#'
 #' @export
 #' @author Duong Vu, 2018
 #' @examples
