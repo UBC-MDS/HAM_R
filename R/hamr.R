@@ -206,8 +206,9 @@ impute_missing <- function(dfm, col, method, missing_val_char) {
 #' @export
 #' @author Duong Vu, 2018
 #' @examples
-#' compare_model(data.frame(ex = c(1, 2, 3), bf = c(6, 8, "")), "bf", "DIP", "")
-#'
+#' df <- data.frame(exp = c(1, 2, 3), res = c(0, 10, ""))
+#' compare_model(df, "res", c("CC","MIP"), "")
+#' 
 #' @family aggregate functions
 #' @seealso \code{\link{na.omit}} for the complete case
 
